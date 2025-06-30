@@ -3,47 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户登录与注册</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>智能仓库环境监控系统 - 登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .student-info {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #5bc0de;
+            background: white;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #555;
+        }
+
+        .link-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-group a {
+            color: #5bc0de;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .link-group a:hover {
+            text-decoration: underline;
+        }
+
+        .flash-message {
+            background: #f2dede;
+            border: 1px solid #d9534f;
+            color: #a94442;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container" id="container">
-        <div class="form-container sign-up-container">
-            <form id="registerForm">
-                <h1>创建账号</h1>
-                <input type="text" id="regUsername" placeholder="用户名" required />
-                <input type="email" id="regEmail" placeholder="邮箱" required />
-                <input type="password" id="regPassword" placeholder="密码" required />
-                <input type="password" id="regConfirmPassword" placeholder="确认密码" required />
-                <button type="submit">注册</button>
-            </form>
+    <div class="login-container">
+        <div class="logo-icon">🏭</div>
+
+        <div class="header">
+            <h1>智能仓库环境监控系统</h1>
+            <p>实时环境监测与门禁管理</p>
+            <p class="student-info">周泽航_2240812222</p>
         </div>
-        <div class="form-container sign-in-container">
-            <form id="loginForm">
-                <h1>登录</h1>
-                <input type="text" id="loginUsername" placeholder="用户名" required />
-                <input type="password" id="loginPassword" placeholder="密码" required />
-                <a href="#">忘记密码?</a>
-                <button type="submit">登录</button>
-            </form>
-        </div>
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1>欢迎回来!</h1>
-                    <p>已有账号? 请登录您的个人信息</p>
-                    <button class="ghost" id="signIn">登录</button>
-                </div>
-                <div class="overlay-panel overlay-right">
-                    <h1>你好，朋友!</h1>
-                    <p>还没有账号? 立即注册开始您的旅程</p>
-                    <button class="ghost" id="signUp">注册</button>
-                </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required autofocus>
             </div>
+
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">登 录</button>
+        </form>
+
+        <div class="link-group">
+            <p>还没有账号？<a href="{{ url_for('register') }}">立即注册</a></p>
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
